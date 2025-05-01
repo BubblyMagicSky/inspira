@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Repository } from 'typeorm';
 import { AuthService } from '../../src/services/AuthService';
-import { Provider } from '../../src/entities/AuthToken';
+import { Provider, AuthToken } from '../../src/entities/AuthToken';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -55,7 +56,7 @@ describe('AuthService', () => {
       authService.tokenRepository = {
         findOne: mockFindOne,
         save: mockSave,
-      };
+      } as unknown as Repository<AuthToken>;
       
       const result = await authService.exchangeSpotifyCode('mock_code', 'user_123');
       
@@ -127,7 +128,7 @@ describe('AuthService', () => {
       authService.tokenRepository = {
         findOne: mockFindOne,
         save: mockSave,
-      };
+      } as unknown as Repository<AuthToken>;
       
       const result = await authService.exchangeSpotifyCode('mock_code', 'user_123');
       
@@ -171,7 +172,7 @@ describe('AuthService', () => {
       authService.tokenRepository = {
         findOne: mockFindOne,
         save: mockSave,
-      };
+      } as unknown as Repository<AuthToken>;
       
       const result = await authService.exchangeTmdbCode('mock_request_token', 'user_123');
       

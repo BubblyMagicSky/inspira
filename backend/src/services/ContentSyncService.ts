@@ -7,10 +7,10 @@ import { Item, MediaType } from '../entities/Item';
 import { AuthService } from './AuthService';
 
 export class ContentSyncService {
-  private userRepository: Repository<User>;
-  private tokenRepository: Repository<AuthToken>;
-  private itemRepository: Repository<Item>;
-  private authService: AuthService;
+  public userRepository: Repository<User>;
+  public tokenRepository: Repository<AuthToken>;
+  public itemRepository: Repository<Item>;
+  public authService: AuthService;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);

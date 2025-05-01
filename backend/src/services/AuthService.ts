@@ -5,8 +5,8 @@ import { User } from '../entities/User';
 import { AuthToken, Provider } from '../entities/AuthToken';
 
 export class AuthService {
-  private userRepository: Repository<User>;
-  private tokenRepository: Repository<AuthToken>;
+  public userRepository: Repository<User>;
+  public tokenRepository: Repository<AuthToken>;
 
   constructor() {
     this.userRepository = AppDataSource.getRepository(User);
