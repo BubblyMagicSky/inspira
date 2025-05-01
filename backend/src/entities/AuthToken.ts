@@ -9,20 +9,20 @@ export enum Provider {
 @Entity()
 export class AuthToken {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  userId: string;
+  userId!: string;
 
   @ManyToOne(() => User, (user) => user.tokens)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @Column({
     type: 'enum',
     enum: Provider,
   })
-  provider: Provider;
+  provider!: Provider;
 
   @Column({
     type: 'text',
@@ -41,7 +41,7 @@ export class AuthToken {
       },
     },
   })
-  accessToken: string;
+  accessToken!: string;
 
   @Column({
     type: 'text',
@@ -62,25 +62,25 @@ export class AuthToken {
       },
     },
   })
-  refreshToken: string;
+  refreshToken!: string;
 
   @Column({ nullable: true })
-  tokenType: string;
+  tokenType!: string;
 
   @Column({ nullable: true })
-  scope: string;
+  scope!: string;
 
   @Column({ type: 'timestamp', nullable: true })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   isExpired(): boolean {
     if (!this.expiresAt) return false;

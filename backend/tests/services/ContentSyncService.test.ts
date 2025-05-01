@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { Repository } from 'typeorm';
 import { ContentSyncService } from '../../src/services/ContentSyncService';
 import { AuthService } from '../../src/services/AuthService';
-import { Provider } from '../../src/entities/AuthToken';
-import { MediaType } from '../../src/entities/Item';
+import { Provider, AuthToken } from '../../src/entities/AuthToken';
+import { MediaType, Item } from '../../src/entities/Item';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -17,7 +18,6 @@ describe('ContentSyncService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     
-    mockAuthService = new MockedAuthService() as jest.Mocked<AuthService>;
     MockedAuthService.prototype.getValidToken = jest.fn().mockImplementation(
       (userId: string, provider: Provider) => {
         return Promise.resolve({
@@ -32,6 +32,8 @@ describe('ContentSyncService', () => {
         });
       }
     );
+    
+    mockAuthService = new MockedAuthService() as jest.Mocked<AuthService>;
     
     contentSyncService = new ContentSyncService();
     contentSyncService.authService = mockAuthService;
@@ -62,12 +64,17 @@ describe('ContentSyncService', () => {
         },
       };
       
-      mockedAxios.get.mockResolvedValueOnce(mockSpotifyResponse);
+      mockedAxios.get.mockImplementation((url) => {
+        if (url === 'https://api.spotify.com/v1/me/tracks') {
+          return Promise.resolve(mockSpotifyResponse);
+        }
+        return Promise.reject(new Error(`Unexpected URL: ${url}`));
+      });
       
       const mockSave = jest.fn().mockImplementation((items) => Promise.resolve(items));
       contentSyncService.itemRepository = {
         save: mockSave,
-      };
+      } as unknown as Repository<Item>;
       
       const result = await contentSyncService.syncUserContent('user_123', Provider.SPOTIFY);
       
@@ -133,12 +140,17 @@ describe('ContentSyncService', () => {
         },
       };
       
-      mockedAxios.get.mockResolvedValueOnce(mockTmdbResponse);
+      mockedAxios.get.mockImplementation((url) => {
+        if (url.includes('https://api.themoviedb.org/3/account')) {
+          return Promise.resolve(mockTmdbResponse);
+        }
+        return Promise.reject(new Error(`Unexpected URL: ${url}`));
+      });
       
       const mockSave = jest.fn().mockImplementation((items) => Promise.resolve(items));
       contentSyncService.itemRepository = {
         save: mockSave,
-      };
+      } as unknown as Repository<Item>;
       
       const result = await contentSyncService.syncUserContent('user_123', Provider.TMDB);
       
@@ -181,7 +193,10 @@ describe('ContentSyncService', () => {
     it('should throw an error if no valid token is found', async () => {
       MockedAuthService.prototype.getValidToken = jest.fn().mockResolvedValue(null);
       
-      await expect(contentSyncService.syncUserContent('user_123', Provider.SPOTIFY)).rejects.toThrow(
+      const testService = new ContentSyncService();
+      testService.authService = new MockedAuthService() as jest.Mocked<AuthService>;
+      
+      await expect(testService.syncUserContent('user_123', Provider.SPOTIFY)).rejects.toThrow(
         'No valid token found for user user_123 and provider spotify'
       );
       
@@ -199,7 +214,7 @@ describe('ContentSyncService', () => {
       const mockFind = jest.fn().mockResolvedValue(mockTokens);
       contentSyncService.tokenRepository = {
         find: mockFind,
-      };
+      } as unknown as Repository<AuthToken>;
       
       const mockSyncUserContent = jest.fn().mockResolvedValue([]);
       contentSyncService.syncUserContent = mockSyncUserContent;

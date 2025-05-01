@@ -17,42 +17,42 @@ export enum Provider {
 @Entity()
 export class Item {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column()
-  userId: string;
+  userId!: string;
 
   @ManyToOne(() => User, (user) => user.items)
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @Column()
-  title: string;
+  title!: string;
 
   @Column({
     type: 'enum',
     enum: MediaType,
   })
-  type: MediaType;
+  type!: MediaType;
 
   @Column({
     type: 'enum',
     enum: Provider,
   })
-  provider: Provider;
+  provider!: Provider;
 
   @Column()
-  externalId: string;
+  externalId!: string;
 
   @Column({ type: 'jsonb', default: '{}' })
-  metadata: Record<string, any>;
+  metadata!: Record<string, any>;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 }

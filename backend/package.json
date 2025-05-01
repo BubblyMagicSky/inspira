@@ -15,11 +15,11 @@
     "@trpc/server": "^10.38.0",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "node-cron": "^3.0.2",
     "pg": "^8.11.3",
-    "crypto-js": "^4.1.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
     "zod": "^3.22.2"
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.4",
+    "@types/jest": "^29.5.14",
     "@types/node": "^18.17.14",
     "@types/node-cron": "^3.0.10",
     "@types/pg": "^8.10.5",

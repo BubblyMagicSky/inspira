@@ -5,29 +5,29 @@ import { Item } from './Item';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  username: string;
+  username!: string;
 
   @Column({ nullable: true })
-  avatarUrl: string;
+  avatarUrl!: string;
 
   @Column({ default: false })
-  isAdmin: boolean;
+  isAdmin!: boolean;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date;
+  createdAt!: Date;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
-  updatedAt: Date;
+  updatedAt!: Date;
 
-  @OneToMany(() => AuthToken, (token) => token.user)
-  tokens: AuthToken[];
+  @OneToMany(() => AuthToken, (token: AuthToken) => token.user)
+  tokens!: AuthToken[];
 
-  @OneToMany(() => Item, (item) => item.user)
-  items: Item[];
+  @OneToMany(() => Item, (item: Item) => item.user)
+  items!: Item[];
 }
