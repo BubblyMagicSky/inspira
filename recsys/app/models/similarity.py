@@ -1,7 +1,7 @@
-import numpy as np
+from typing import Dict, List, Optional
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from typing import Dict, List, Optional, Tuple
 
 from .item import Item, ItemType, RecommendationScore
 
