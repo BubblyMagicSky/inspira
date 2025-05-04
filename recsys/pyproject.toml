@@ -16,6 +16,9 @@ pytest = "^7.4.0"
 pytest-cov = "^4.1.0"
 httpx = "^0.26.0"
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.1.6"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
@@ -26,3 +29,20 @@ python_files = "test_*.py"
 python_functions = "test_*"
 python_classes = "Test*"
 addopts = "--cov=app --cov-report=term-missing"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "I"]
+ignore = ["E501"]
+exclude = [
+    ".git",
+    ".ruff_cache",
+    "__pycache__",
+    "dist",
+    "venv",
+    ".venv",
+]
+
+[tool.ruff.isort]
+known-first-party = ["app"]
