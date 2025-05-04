@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum ItemType {
+  MOVIE
+  TRACK
+  BOOK
+  GAME
+  ART
+}
+
+enum Provider {
+  SPOTIFY
+  TMDB
+}
+
+enum InteractionType {
+  LIKE
+  SKIP
+  SAVE
+}
+
+// Models
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String
+  avatarUrl String?
+  isAdmin   Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  items        Item[]
+  interactions Interaction[]
+  authTokens   AuthToken[]
+}
+
+model Item {
+  id         String   @id @default(uuid())
+  title      String
+  type       ItemType
+  provider   Provider
+  externalId String
+  metadata   Json     @default("{}")
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  userId       String
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interactions Interaction[]
+
+  // Indices
+  @@index([type])
+}
+
+model Interaction {
+  id        String          @id @default(uuid())
+  type      InteractionType
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId String
+  item   Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+
+  // Indices
+  @@index([userId])
+  @@unique([userId, itemId, type])
+}
+
+model AuthToken {
+  id           String   @id @default(uuid())
+  provider     Provider
+  accessToken  String
+  refreshToken String?
+  tokenType    String?
+  scope        String?
+  expiresAt    DateTime?
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
