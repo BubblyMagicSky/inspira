@@ -1,8 +1,7 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response, Router } from 'express';
 import { AuthService } from '../services/AuthService';
-import { Provider } from '../entities/AuthToken';
 
-const router = express.Router();
+const router: Router = express.Router();
 const authService = new AuthService();
 
 router.get('/spotify', (req: Request, res: Response) => {

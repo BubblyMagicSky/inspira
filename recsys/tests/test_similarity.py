@@ -1,5 +1,5 @@
 import pytest
-import numpy as np
+
 from app.models.item import Item, ItemType, Provider, RecommendationScore
 from app.models.similarity import SimilarityEngine
 

@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './User';
+const CryptoJS = require('crypto-js');
 
 export enum Provider {
   SPOTIFY = 'spotify',
@@ -28,13 +29,11 @@ export class AuthToken {
     type: 'text',
     transformer: {
       to: (value: string) => {
-        const CryptoJS = require('crypto-js');
         const secretKey = process.env.JWT_SECRET || 'default-secret-key';
         return CryptoJS.AES.encrypt(value, secretKey).toString();
       },
       from: (value: string) => {
         if (!value) return null;
-        const CryptoJS = require('crypto-js');
         const secretKey = process.env.JWT_SECRET || 'default-secret-key';
         const bytes = CryptoJS.AES.decrypt(value, secretKey);
         return bytes.toString(CryptoJS.enc.Utf8);

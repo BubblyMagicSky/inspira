@@ -36,7 +36,7 @@ export const createStubDataSource = () => {
   console.log('Using database stub for testing/CI environment');
   return {
     initialize: async () => console.log('Database stub initialized'),
-    getRepository: (entity: any) => ({
+    getRepository: (_: any) => ({
       find: async () => [],
       findOne: async () => null,
       save: async (data: any) => data,

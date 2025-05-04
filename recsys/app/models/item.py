@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
 from enum import Enum
+from typing import Any, Dict, List
+
+from pydantic import BaseModel, Field
 
 
 class ItemType(str, Enum):

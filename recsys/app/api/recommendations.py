@@ -1,7 +1,8 @@
-from fastapi import APIRouter, HTTPException, Query
 from typing import Dict, List, Optional
 
-from ..models.item import Item, RecommendationResponse, RecommendationScore
+from fastapi import APIRouter, HTTPException, Query
+
+from ..models.item import Item, RecommendationResponse
 from ..models.similarity import SimilarityEngine
 
 router = APIRouter()

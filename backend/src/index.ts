@@ -36,7 +36,7 @@ const startServer = async () => {
   try {
     await initializeDatabase();
 
-    const contentSyncService = new ContentSyncService();
+    const _contentSyncService = new ContentSyncService();
     
     cron.schedule('0 0 * * *', async () => {
       try {
